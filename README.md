@@ -1,7 +1,7 @@
 1.  Загрузить csv-файлы на HDFS
 ```hdfs dfs -ls /input```
 
-![input_dir](image.png)
+![input_dir](images/image.png)
 
 
 2.  Создать над csv-файлами по 2 таблицы (managed и external). 
@@ -33,7 +33,7 @@
     LOAD DATA INPATH '/input/customer.csv' INTO TABLE managed_customer;
     ```
 
-    ![customer_managed](image-1.png)
+    ![customer_managed](images/image-1.png)
 
     ```
     CREATE EXTERNAL TABLE external_customer (
@@ -60,7 +60,7 @@
     TBLPROPERTIES ("skip.header.line.count"="1");
     ```
 
-    ![external_customer](image-2.png)
+    ![external_customer](images/image-2.png)
 
 
 
@@ -89,7 +89,7 @@
 
     LOAD DATA INPATH '/input/transaction.csv' INTO TABLE managed_transaction;
     ```
-    ![transaction_managed](image-2.png)
+    ![transaction_managed](images/image-2.png)
 
 
     ```
@@ -113,7 +113,7 @@
     LOCATION '/input/transaction'
     TBLPROPERTIES ("skip.header.line.count"="1");
     ```
-    ![external_transaction](image-4.png)
+    ![external_transaction](images/image-4.png)
 
 
 3. Создать еще две таблицы с форматом хранения данных parquet и загрузить данные из пункта 2. 
@@ -122,13 +122,13 @@
     CREATE TABLE parquet_customer STORED AS PARQUET AS
     SELECT * FROM managed_customer;
     ```
-    ![parquet_customer](image-5.png)
+    ![parquet_customer](images/image-5.png)
 
     ```
     CREATE TABLE parquet_transaction STORED AS PARQUET AS
     SELECT * FROM managed_transaction;
     ```
-    ![parquet_transaction](image-6.png)
+    ![parquet_transaction](images/image-6.png)
 
 
 4. Создать еще одну таблицу с транзакциями, партицированную по полю transaction_date (предварительно привести дату к виду YYYY-MM-DD)
@@ -188,7 +188,7 @@
         transaction_date
     FROM transaction_with_formatted_date;
     ```
-    ![partitioned_transaction](image-7.png)
+    ![partitioned_transaction](images/image-7.png)
 
 5. Выполнить запросы с таблицами из пункта 2-4 и посмотреть на время выполнение
 Количество подтвержденных транзакций по каждому клиенту
@@ -211,7 +211,7 @@
         ORDER BY 
             confirmed_transactions_count DESC;
         ```
-        ![alt text](image-12.png)
+        ![alt text](images/image-12.png)
 
         12.524 seconds
 
@@ -233,7 +233,7 @@
         ORDER BY 
             confirmed_transactions_count DESC;
         ```
-        ![alt text](image-13.png)
+        ![alt text](images/image-13.png)
 
         11.131 seconds
 
@@ -255,7 +255,7 @@
         ORDER BY 
             confirmed_transactions_count DESC;
         ```
-        ![alt text](image-14.png)
+        ![alt text](images/image-14.png)
 
         23.36 seconds
 
@@ -277,7 +277,7 @@
         ORDER BY 
             month, transactions_count DESC;
         ```
-        ![alt text](image-15.png)
+        ![alt text](images/image-15.png)
         14.888 seconds
 
         2.2. Для external_transaction (TEXT, External)
@@ -295,7 +295,7 @@
         ORDER BY 
             month, transactions_count DESC;
         ```
-        ![alt text](image-16.png)
+        ![alt text](images/image-16.png)
         12.924 seconds
 
 
@@ -314,7 +314,7 @@
         ORDER BY 
             month, transactions_count DESC;
         ```
-        ![alt text](image-17.png)
+        ![alt text](images/image-17.png)
         32.935 seconds
 
     3. ФИО клиентов без транзакций
@@ -333,7 +333,7 @@
         ORDER BY 
             c.last_name, c.first_name;
         ```
-        ![alt text](image-18.png)
+        ![alt text](images/image-18.png)
         13.8 seconds
 
         3.2. Для external_transaction
@@ -352,7 +352,7 @@
             c.last_name, c.first_name;
         ```
 
-        ![alt text](image-19.png)
+        ![alt text](images/image-19.png)
         8.364 seconds
 
         3.3. Для partitioned_transaction
@@ -370,7 +370,7 @@
         ORDER BY 
             c.last_name, c.first_name;
         ```
-        ![alt text](image-20.png)
+        ![alt text](images/image-20.png)
         20.71 seconds
 
     4. Клиенты с минимальной/максимальной суммой транзакций
@@ -407,7 +407,7 @@
             total_amount DESC;
         ```
 
-        ![alt text](image-21.png)
+        ![alt text](images/image-21.png)
         20.106 seconds
 
         4.2. Для external_transaction
@@ -442,7 +442,7 @@
         ORDER BY 
             total_amount DESC;
         ```
-        ![alt text](image-22.png)
+        ![alt text](images/image-22.png)
         15.51 seconds
 
         4.3. Для partitioned_transaction
@@ -477,7 +477,7 @@
         ORDER BY 
             total_amount DESC;
         ```
-        ![alt text](image-23.png)
+        ![alt text](images/image-23.png)
 
         39.527 seconds
 
