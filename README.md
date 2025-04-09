@@ -26,7 +26,7 @@
         property_valuation INT
     )
     ROW FORMAT DELIMITED
-    FIELDS TERMINATED BY ','
+    FIELDS TERMINATED BY ';'
     STORED AS TEXTFILE
     TBLPROPERTIES ("skip.header.line.count"="1");
 
@@ -54,7 +54,7 @@
     property_valuation INT
     )
     ROW FORMAT DELIMITED
-    FIELDS TERMINATED BY ','
+    FIELDS TERMINATED BY ';'
     STORED AS TEXTFILE
     LOCATION '/input/customer'
     TBLPROPERTIES ("skip.header.line.count"="1");
@@ -83,7 +83,7 @@
         standard_cost DOUBLE
     )
     ROW FORMAT DELIMITED
-    FIELDS TERMINATED BY ','
+    FIELDS TERMINATED BY ';'
     STORED AS TEXTFILE
     TBLPROPERTIES ("skip.header.line.count"="1");
 
@@ -108,7 +108,7 @@
         standard_cost DOUBLE
     )
     ROW FORMAT DELIMITED
-    FIELDS TERMINATED BY ','
+    FIELDS TERMINATED BY ';'
     STORED AS TEXTFILE
     LOCATION '/input/transaction'
     TBLPROPERTIES ("skip.header.line.count"="1");
@@ -193,6 +193,7 @@
 5. Выполнить запросы с таблицами из пункта 2-4 и посмотреть на время выполнение
 Количество подтвержденных транзакций по каждому клиенту
     1. Вывести количество подтвержденных транзакций по каждому клиенту
+
         1.1. Для managed_transaction (TEXT, Managed, без партиций)
         ```
         SELECT 
@@ -213,7 +214,9 @@
         ```
         ![alt text](images/image-12.png)
 
-        12.524 seconds
+        *12.524 seconds*
+
+
 
         1.2. Для external_transaction (TEXT, External, без партиций)
         ```
@@ -235,7 +238,7 @@
         ```
         ![alt text](images/image-13.png)
 
-        11.131 seconds
+        *11.131 seconds*
 
         1.3. Для partitioned_transaction (Parquet, Managed, с партициями)
         ```
@@ -257,7 +260,7 @@
         ```
         ![alt text](images/image-14.png)
 
-        23.36 seconds
+        *23.36 seconds*
 
 
     2. Распределение транзакций по месяцам и сферам деятельности
@@ -278,7 +281,7 @@
             month, transactions_count DESC;
         ```
         ![alt text](images/image-15.png)
-        14.888 seconds
+        *14.888 seconds*
 
         2.2. Для external_transaction (TEXT, External)
         ```
@@ -296,7 +299,8 @@
             month, transactions_count DESC;
         ```
         ![alt text](images/image-16.png)
-        12.924 seconds
+
+        *12.924 seconds*
 
 
         2.3. Для partitioned_transaction (Parquet, Managed, партиционирована по дате)
@@ -315,7 +319,7 @@
             month, transactions_count DESC;
         ```
         ![alt text](images/image-17.png)
-        32.935 seconds
+        *32.935 seconds*
 
     3. ФИО клиентов без транзакций
         3.1. Для managed_transaction
@@ -334,7 +338,7 @@
             c.last_name, c.first_name;
         ```
         ![alt text](images/image-18.png)
-        13.8 seconds
+        *13.8 seconds*
 
         3.2. Для external_transaction
         ```
@@ -353,7 +357,7 @@
         ```
 
         ![alt text](images/image-19.png)
-        8.364 seconds
+        *8.364 seconds*
 
         3.3. Для partitioned_transaction
         ```
@@ -371,9 +375,10 @@
             c.last_name, c.first_name;
         ```
         ![alt text](images/image-20.png)
-        20.71 seconds
+        *20.71 seconds*
 
     4. Клиенты с минимальной/максимальной суммой транзакций
+    
         4.1. Для managed_transaction
         ```
         SELECT 
@@ -408,9 +413,10 @@
         ```
 
         ![alt text](images/image-21.png)
-        20.106 seconds
+        *20.106 seconds*
 
         4.2. Для external_transaction
+
         ```
         SELECT 
             customer_id,
@@ -443,9 +449,10 @@
             total_amount DESC;
         ```
         ![alt text](images/image-22.png)
-        15.51 seconds
+        *15.51 seconds*
 
         4.3. Для partitioned_transaction
+    
         ```
         SELECT 
             customer_id,
@@ -479,7 +486,7 @@
         ```
         ![alt text](images/image-23.png)
 
-        39.527 seconds
+        *39.527 seconds*
 
 
 6. Написать отчет, где описать с какими форматами хранения данных быстрее работает hive, и как влияют на производительность партиции и тип таблицы (managed и external).
